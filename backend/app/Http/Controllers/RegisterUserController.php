@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -18,7 +19,7 @@ class RegisterUserController extends Controller
 
         return response()->json([
             'message' => 'user registered successfully',
-            'data' => $user,
+            'data' => fractal()->item($user, new UserTransformer),
             'token' =>  $user->createToken($request->header('User-Agent'))->plainTextToken
         ], Response::HTTP_CREATED);
     }
