@@ -41,7 +41,8 @@ class TaskController extends Controller
     {
 
 
-        $task = Task::create(
+        $user = auth()->user();
+        $task = $user->tasks()->create(
             [
                 'status' => 'pending',
                 'due_at' => Carbon::parse($request->due_at)->toDateTimeString()
