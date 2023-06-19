@@ -21,9 +21,7 @@ Route::post('auth/register', RegisterUserController::class);
 Route::post('auth/login', LoginController::class);
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('tasks', TaskController::class);
+    Route::put('tasks/{task}/status', [TaskController::class, 'updateStatus']);
 });
-
-Route::apiResource('tasks', TaskController::class);
-Route::put('tasks/{task}/status', [TaskController::class, 'updateStatus']);
