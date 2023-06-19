@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Models\Task;
 use DateTime;
 use Illuminate\Http\Request;
@@ -87,5 +88,16 @@ class TaskController extends Controller
             'message' => 'tasks deleted successfully',
 
         ]);
+    }
+
+    public function updateStatus(UpdateTaskStatusRequest $request, Task $task)
+    {
+
+        $task->status = $request->status;
+        $task->save();
+        return response()->json([
+            'message' => 'task status updated successfully',
+            'data' => $task
+        ], Response::HTTP_CREATED);
     }
 }
