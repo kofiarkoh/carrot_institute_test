@@ -11,4 +11,10 @@ class Task extends Model
     use HasFactory, HasUuid;
 
     protected $guarded = ['id', 'uuid'];
+
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }
