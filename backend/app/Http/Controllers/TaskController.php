@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class TaskController extends Controller
 {
@@ -29,7 +33,20 @@ class TaskController extends Controller
      */
     public function store(CreateTaskRequest $request)
     {
-        //
+
+
+        $task = Task::create(
+            [
+                'status' => 'pending',
+                'due_at' => Carbon::parse($request->due_at)->toDateTimeString()
+            ] + $request->all()
+        );
+
+
+        return response()->json([
+            'message' => 'task created successfully',
+            'data' => $task
+        ], Response::HTTP_CREATED);
     }
 
     /**
