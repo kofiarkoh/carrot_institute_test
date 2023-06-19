@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Models\Task;
 use DateTime;
@@ -73,9 +74,18 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $data = $request->validated();
+        $task = tap($task, function ($_task) use ($data, $request) {
+            $_task->update(
+                ['due_at' => Carbon::parse($request->due_at)->toDateTimeString()] + $data
+            );
+        });
+        return response()->json([
+            'message' => 'task updated successfully',
+            'data' => $task
+        ], Response::HTTP_CREATED);
     }
 
     /**
