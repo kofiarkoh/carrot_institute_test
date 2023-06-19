@@ -6,6 +6,7 @@ use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\UpdateTaskStatusRequest;
 use App\Models\Task;
+use App\Transformers\TaskTransformer;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,10 +20,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = auth()->user()->tasks;
         return response()->json([
             'message' => 'tasks retrieved successfully',
-            'data' => $tasks
+            'data' => fractal()->collection($tasks, new TaskTransformer)
         ]);
     }
 
@@ -41,7 +42,8 @@ class TaskController extends Controller
     {
 
 
-        $task = Task::create(
+        $user = auth()->user();
+        $task = $user->tasks()->create(
             [
                 'status' => 'pending',
                 'due_at' => Carbon::parse($request->due_at)->toDateTimeString()
@@ -51,7 +53,7 @@ class TaskController extends Controller
 
         return response()->json([
             'message' => 'task created successfully',
-            'data' => $task
+            'data' => fractal()->item($task, new TaskTransformer)
         ], Response::HTTP_CREATED);
     }
 
@@ -84,7 +86,7 @@ class TaskController extends Controller
         });
         return response()->json([
             'message' => 'task updated successfully',
-            'data' => $task
+            'data' => fractal()->item($task, new TaskTransformer)
         ], Response::HTTP_CREATED);
     }
 
@@ -107,7 +109,7 @@ class TaskController extends Controller
         $task->save();
         return response()->json([
             'message' => 'task status updated successfully',
-            'data' => $task
+            'data' => fractal()->item($task, new TaskTransformer)
         ], Response::HTTP_CREATED);
     }
 }
