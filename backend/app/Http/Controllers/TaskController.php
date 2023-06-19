@@ -19,7 +19,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = auth()->user()->tasks;
         return response()->json([
             'message' => 'tasks retrieved successfully',
             'data' => $tasks
