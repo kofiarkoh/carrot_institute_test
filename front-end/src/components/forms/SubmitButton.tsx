@@ -14,12 +14,10 @@ export default function SubmitButton(props: LoadingButtonProps) {
 				backgroundColor: "primary.main",
 				width: "60%",
 				height: "50px",
-				borderRadius: "15px",
+				borderRadius: "10px",
 				textTransform: "capitalize",
 				borderColor: "transparent",
-				"&:hover": {
-					backgroundColor: "black",
-				},
+
 				...props.sx,
 			}}
 			onClick={submitForm}>
