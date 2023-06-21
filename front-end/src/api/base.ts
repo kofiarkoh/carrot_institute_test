@@ -1,4 +1,5 @@
 import axios from "axios";
+import {reduxStore} from "../store/store";
 
 const BASE_URL = "http://192.168.8.108:8000/api";
 
@@ -48,6 +49,31 @@ export const POST = async (
 			timeoutErrorMessage: "Connection Timed out",
 		})
 		.then((res) => {
+			return {
+				is_error: false,
+				msg: res.data,
+				code: 200,
+			};
+		})
+		.catch((error) => {
+			return errorHandler(error);
+		});
+};
+
+export const GET = async (endpoint: string, headers = {}) => {
+	let token = reduxStore.getState().loginState.token;
+
+	let _headers = {
+		Accept: "application/json",
+		Authorization: `Bearer ${token}`,
+	};
+	_headers = {..._headers, ...headers};
+	return await axios
+		.get(`${BASE_URL}/${endpoint}`, {
+			headers: _headers,
+			timeoutErrorMessage: "Connection Timed out",
+		})
+		.then(async (res) => {
 			return {
 				is_error: false,
 				msg: res.data,
