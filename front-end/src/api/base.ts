@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.8.108:8000";
+const BASE_URL = "http://192.168.8.108:8000/api";
 
 export const errorHandler = (error: any) => {
 	if (error.response) {
