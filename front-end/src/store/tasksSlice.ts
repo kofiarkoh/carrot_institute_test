@@ -5,10 +5,11 @@ export interface Task {
 	description: string;
 	due_at: string;
 	uuid: string;
+	status: string;
 }
 const initialState: {tasks: Task[]; currentTask: Task} = {
 	tasks: [],
-	currentTask: {title: "", description: "", due_at: "", uuid: ""},
+	currentTask: {title: "", description: "", due_at: "", uuid: "", status: ""},
 };
 export const taskSlice = createSlice({
 	name: "taskSlice",

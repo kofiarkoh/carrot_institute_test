@@ -4,17 +4,17 @@
 import {css} from "@emotion/react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import {Formik, FormikHelpers} from "formik";
+import {Formik, FormikHelpers, FormikProps, FormikValues} from "formik";
 import * as Yup from "yup";
 import FormDatePicker from "../../../components/forms/FormDatePicker";
 import FormTextField from "../../../components/forms/FormTextField";
 import SubmitButton from "../../../components/forms/SubmitButton";
-import {POST} from "@/api/base";
-import {useState} from "react";
-import {useAppDispatch} from "@/store/store";
+import {POST, PUT} from "@/api/base";
+import {useEffect, useRef, useState} from "react";
+import {useAppDispatch, useAppSelector} from "@/store/store";
 import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
-import {addTask} from "../../../store/tasksSlice";
+import {addTask, setCurrentTask} from "../../../store/tasksSlice";
 
 const valdiationSchema = Yup.object().shape({
 	title: Yup.string().required(),
@@ -25,16 +25,21 @@ export default function AddTaskDetails() {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+	const formikRef = useRef<FormikProps<FormikValues>>(null);
+	const {currentTask} = useAppSelector((state) => state.tasksState);
 
 	const createTask = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
 			return;
 		}
 
+		let isUpdate = currentTask.uuid ? true : false;
 		setLoading(true);
-		let response = await POST("tasks", data);
+		let response = isUpdate
+			? await PUT(`tasks/${currentTask.uuid}`, data)
+			: await POST("tasks", data);
 		setLoading(false);
-
+		console.log(response);
 		if (response.is_error) {
 			if (response.code === 422) {
 				helpers.setErrors(response.msg.errors);
@@ -44,9 +49,24 @@ export default function AddTaskDetails() {
 			return;
 		}
 
+		if (isUpdate) {
+			dispatch(
+				setCurrentTask({
+					title: "",
+					description: "",
+					due_at: "",
+					uuid: "",
+					status: "",
+				})
+			);
+			router.push("/tasks/index");
+		}
 		dispatch(addTask(response.msg.data));
 		router.push("/tasks/index");
 	};
+	useEffect(() => {
+		formikRef.current?.setValues(currentTask);
+	}, [currentTask]);
 	return (
 		<div
 			css={css`
@@ -60,6 +80,9 @@ export default function AddTaskDetails() {
 				align-items: center;
 			`}>
 			<Formik
+				innerRef={(t) => {
+					formikRef.current = t;
+				}}
 				initialValues={{
 					title: "",
 					description: "",

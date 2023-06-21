@@ -58,6 +58,7 @@ export default function AddTaskDetails() {
 								title={task.title}
 								description={task.description}
 								uuid={task.uuid}
+								status={task.status}
 							/>
 						</Grid>
 					);

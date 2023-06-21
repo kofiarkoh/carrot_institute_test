@@ -68,6 +68,7 @@ export default function TaskItem(props: Props) {
 
 	const editTask = () => {
 		dispatch(setCurrentTask(props));
+		console.log(props);
 		router.push("/tasks/details");
 	};
 	return (
