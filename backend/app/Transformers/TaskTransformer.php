@@ -20,7 +20,7 @@ class TaskTransformer extends TransformerAbstract
 
         return [
             'uuid'                      => $task->uuid,
-            'title'                     => $task->description,
+            'title'                     => $task->title,
             'description'               => $task->description,
             'due_at'                    => $task->due_at,
 
