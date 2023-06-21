@@ -59,6 +59,37 @@ export const POST = async (
 			return errorHandler(error);
 		});
 };
+export const PUT = async (
+	endpoint: string,
+	data: any,
+	headers = {},
+	timeout = 1800000
+) => {
+	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
+	let _headers = {
+		Accept: "application/json",
+		Authorization: `Bearer ${token}`,
+		"Content-Type": "application/json",
+	};
+	_headers = {..._headers, ...headers};
+
+	return await axios
+		.put(`${BASE_URL}/${endpoint}`, data, {
+			headers: _headers,
+			timeout: timeout,
+			timeoutErrorMessage: "Connection Timed out",
+		})
+		.then((res) => {
+			return {
+				is_error: false,
+				msg: res.data,
+				code: 200,
+			};
+		})
+		.catch((error) => {
+			return errorHandler(error);
+		});
+};
 
 export const GET = async (endpoint: string, headers = {}) => {
 	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
