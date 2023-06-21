@@ -16,9 +16,12 @@ export const taskSlice = createSlice({
 		updateTasks: (state, {payload}) => {
 			state.tasks = payload;
 		},
+		addTask: (state, {payload}) => {
+			state.tasks = state.tasks.concat([payload]);
+		},
 	},
 });
 
-export const {updateTasks} = taskSlice.actions;
+export const {updateTasks, addTask} = taskSlice.actions;
 
 export default taskSlice.reducer;
