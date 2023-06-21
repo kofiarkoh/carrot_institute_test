@@ -1,17 +1,48 @@
-import React from "react";
+import React, {useState} from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import {POST} from "../api/base";
+import LinearProgress from "@mui/material/LinearProgress";
+
 type Props = {
 	title: string;
 	description: string;
 	due_at: string;
+	uuid: string;
 };
 export default function TaskItem(props: Props) {
-	const {title, description, due_at} = props;
+	const {title, description, due_at, uuid} = props;
+	const [loading, setLoading] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const closeTaskStatusMenu = () => {
+		setAnchorEl(null);
+	};
+
+	const updateTaskStatus = async (status: string) => {
+		setAnchorEl(null);
+		if (loading) {
+			return;
+		}
+		setLoading(true);
+		let formData = new FormData();
+		formData.append("_method", "PUT");
+		formData.append("status", status);
+		let response = await POST(`tasks/${uuid}/status`, formData, {
+			"Content-Type": "application'/form-data",
+		});
+		setLoading(false);
+		console.log(response);
+	};
 	return (
 		<Box sx={{width: "100%"}}>
 			<Card
@@ -22,6 +53,7 @@ export default function TaskItem(props: Props) {
 					display: "flex",
 					flexDirection: "column",
 				}}>
+				{loading && <LinearProgress />}
 				<CardContent>
 					<Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
 						Due on {due_at}
@@ -33,7 +65,30 @@ export default function TaskItem(props: Props) {
 					<Typography variant="body2">{description}</Typography>
 				</CardContent>
 				<CardActions>
-					<Button size="small">Learn More</Button>
+					<div>
+						<Button
+							id="status-button"
+							aria-controls={open ? "status-menu" : undefined}
+							aria-haspopup="true"
+							aria-expanded={open ? "true" : undefined}
+							size="small"
+							onClick={handleClick}>
+							Mark As
+						</Button>
+						<Menu
+							id="status-menu"
+							anchorEl={anchorEl}
+							open={open}
+							onClose={closeTaskStatusMenu}
+							MenuListProps={{
+								"aria-labelledby": "status-button",
+							}}>
+							<MenuItem onClick={() => updateTaskStatus("pending")}>Pending</MenuItem>
+							<MenuItem onClick={() => updateTaskStatus("completed")}>
+								Completed
+							</MenuItem>
+						</Menu>
+					</div>
 				</CardActions>
 			</Card>
 		</Box>

@@ -57,6 +57,7 @@ export default function AddTaskDetails() {
 								due_at={new Date(task.due_at).toDateString()}
 								title={task.title}
 								description={task.description}
+								uuid={task.uuid}
 							/>
 						</Grid>
 					);
