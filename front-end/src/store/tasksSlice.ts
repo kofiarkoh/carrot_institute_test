@@ -6,8 +6,9 @@ export interface Task {
 	due_at: string;
 	uuid: string;
 }
-const initialState: {tasks: Task[]} = {
+const initialState: {tasks: Task[]; currentTask: Task} = {
 	tasks: [],
+	currentTask: {title: "", description: "", due_at: "", uuid: ""},
 };
 export const taskSlice = createSlice({
 	name: "taskSlice",
@@ -22,9 +23,13 @@ export const taskSlice = createSlice({
 		removeTask: (state, {payload}) => {
 			state.tasks = state.tasks.filter((i) => i.uuid !== payload);
 		},
+		setCurrentTask: (state, {payload}) => {
+			state.currentTask = payload;
+		},
 	},
 });
 
-export const {updateTasks, addTask, removeTask} = taskSlice.actions;
+export const {updateTasks, addTask, removeTask, setCurrentTask} =
+	taskSlice.actions;
 
 export default taskSlice.reducer;

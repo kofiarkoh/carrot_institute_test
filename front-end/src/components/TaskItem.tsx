@@ -10,7 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import {DELETE, POST} from "../api/base";
 import LinearProgress from "@mui/material/LinearProgress";
 import {useAppDispatch} from "../store/store";
-import {removeTask} from "../store/tasksSlice";
+import {removeTask, setCurrentTask} from "../store/tasksSlice";
+import {useRouter} from "next/navigation";
 
 type Props = {
 	title: string;
@@ -21,6 +22,7 @@ type Props = {
 export default function TaskItem(props: Props) {
 	const {title, description, due_at, uuid} = props;
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -62,6 +64,11 @@ export default function TaskItem(props: Props) {
 
 		dispatch(removeTask(uuid));
 		console.log(response);
+	};
+
+	const editTask = () => {
+		dispatch(setCurrentTask(props));
+		router.push("/tasks/details");
 	};
 	return (
 		<Box sx={{width: "100%"}}>
@@ -111,6 +118,9 @@ export default function TaskItem(props: Props) {
 					</div>
 					<Button size="small" color="error" onClick={deleteTask}>
 						Delete
+					</Button>
+					<Button size="small" onClick={editTask}>
+						Edit
 					</Button>
 				</CardActions>
 			</Card>
