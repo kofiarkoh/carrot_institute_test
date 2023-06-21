@@ -12,6 +12,8 @@ import FormTextField from "../../../components/forms/FormTextField";
 import SubmitButton from "../../../components/forms/SubmitButton";
 import {POST} from "../../../api/base";
 import {useState} from "react";
+import {useAppDispatch} from "../../../store/store";
+import {setToken, setUserInfo} from "../../../store/loginSlice";
 
 const valdiationSchema = Yup.object().shape({
 	name: Yup.string().required(),
@@ -24,6 +26,7 @@ const valdiationSchema = Yup.object().shape({
 
 export default function RegistrationPage() {
 	const [loading, setLoading] = useState(false);
+	const dispatch = useAppDispatch();
 
 	const handleRegister = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
@@ -40,6 +43,9 @@ export default function RegistrationPage() {
 			}
 			console.log(response.msg.message);
 		}
+
+		dispatch(setUserInfo(response.msg.data));
+		dispatch(setToken(response.msg.token));
 		console.log(response.msg);
 	};
 	return (

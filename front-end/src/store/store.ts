@@ -4,8 +4,11 @@ import {
 	configureStore,
 } from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import loginSlice from "./loginSlice";
 
-export const rootReducer = combineReducers({});
+export const rootReducer = combineReducers({
+	loginState: loginSlice,
+});
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
 	return configureStore({
