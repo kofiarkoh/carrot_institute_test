@@ -5,9 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import loginSlice from "./loginSlice";
+import tasksSlice from "./tasksSlice";
 
 export const rootReducer = combineReducers({
 	loginState: loginSlice,
+	tasksState: tasksSlice,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
