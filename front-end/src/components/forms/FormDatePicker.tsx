@@ -14,7 +14,7 @@ export default function FormDatePicker(props: FormDateFieldProps) {
 	const [field, meta, helpers] = useField(name);
 
 	const handleChange = (value: any) => {
-		let date = `${value.$D}/${value.$M + 1}/${value.$y}`;
+		let date = `${value.$D}-${value.$M + 1}-${value.$y}`;
 		helpers.setValue(date);
 	};
 
