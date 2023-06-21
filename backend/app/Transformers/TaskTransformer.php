@@ -23,6 +23,7 @@ class TaskTransformer extends TransformerAbstract
             'title'                     => $task->title,
             'description'               => $task->description,
             'due_at'                    => $task->due_at,
+            'status'                    => $task->status
 
 
         ];
