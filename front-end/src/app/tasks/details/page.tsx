@@ -5,9 +5,8 @@ import {css} from "@emotion/react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import {Formik} from "formik";
-import Link from "next/link";
 import * as Yup from "yup";
-import FormPasswordInput from "../../../components/forms/FormPasswordInput";
+import FormDatePicker from "../../../components/forms/FormDatePicker";
 import FormTextField from "../../../components/forms/FormTextField";
 import SubmitButton from "../../../components/forms/SubmitButton";
 
@@ -48,17 +47,21 @@ export default function AddTaskDetails() {
 					</Typography>
 
 					<FormTextField
+						label="Title"
 						placeholder="Title"
 						name="title"
 						sx={{width: "100%", marginTop: 4}}
 					/>
 
 					<FormTextField
+						label="Description"
 						placeholder="Description"
 						name="description"
 						sx={{width: "100%", marginTop: 4}}
 						multiline
 					/>
+
+					<FormDatePicker name="due_at" label="Due Date" />
 
 					<div
 						css={css`
