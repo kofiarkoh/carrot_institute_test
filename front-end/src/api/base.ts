@@ -34,7 +34,7 @@ export const POST = async (
 	headers = {},
 	timeout = 1800000
 ) => {
-	let token = "";
+	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
 	let _headers = {
 		Accept: "application/json",
 		Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ export const POST = async (
 };
 
 export const GET = async (endpoint: string, headers = {}) => {
-	let token = reduxStore.getState().loginState.token;
+	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
 
 	let _headers = {
 		Accept: "application/json",
@@ -74,6 +74,32 @@ export const GET = async (endpoint: string, headers = {}) => {
 			timeoutErrorMessage: "Connection Timed out",
 		})
 		.then(async (res) => {
+			return {
+				is_error: false,
+				msg: res.data,
+				code: 200,
+			};
+		})
+		.catch((error) => {
+			return errorHandler(error);
+		});
+};
+export const DELETE = async (endpoint: string, headers = {}) => {
+	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
+
+	let _headers = {
+		Accept: "application/json",
+		Authorization: `Bearer ${token}`,
+	};
+	let url = `${BASE_URL}/${endpoint}`;
+	console.log(url);
+	return await axios
+		.delete(url, {
+			headers: _headers,
+
+			timeoutErrorMessage: "Connection Timed out",
+		})
+		.then((res) => {
 			return {
 				is_error: false,
 				msg: res.data,
