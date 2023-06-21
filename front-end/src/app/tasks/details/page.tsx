@@ -15,6 +15,7 @@ import {useAppDispatch, useAppSelector} from "@/store/store";
 import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
 import {addTask, setCurrentTask} from "../../../store/tasksSlice";
+import {showSnackBar} from "@/store/snackbarSlice";
 
 const valdiationSchema = Yup.object().shape({
 	title: Yup.string().required(),
@@ -39,13 +40,18 @@ export default function AddTaskDetails() {
 			? await PUT(`tasks/${currentTask.uuid}`, data)
 			: await POST("tasks", data);
 		setLoading(false);
-		console.log(response);
+
+		dispatch(
+			showSnackBar({
+				message: response.msg.message ? response.msg.message : "An error occured",
+				severity: response.is_error ? "error" : "success",
+			})
+		);
 		if (response.is_error) {
 			if (response.code === 422) {
 				helpers.setErrors(response.msg.errors);
 				return;
 			}
-			console.log(response.msg.message);
 			return;
 		}
 
@@ -61,6 +67,7 @@ export default function AddTaskDetails() {
 			);
 			router.push("/tasks/index");
 		}
+
 		dispatch(addTask(response.msg.data));
 		router.push("/tasks/index");
 	};
