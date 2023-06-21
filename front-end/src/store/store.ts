@@ -6,10 +6,12 @@ import {
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import loginSlice from "./loginSlice";
 import tasksSlice from "./tasksSlice";
+import snackbarSlice from "./snackbarSlice";
 
 export const rootReducer = combineReducers({
 	loginState: loginSlice,
 	tasksState: tasksSlice,
+	snackbarState: snackbarSlice,
 });
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {

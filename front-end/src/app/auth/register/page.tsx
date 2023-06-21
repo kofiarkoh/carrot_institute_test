@@ -14,6 +14,7 @@ import {POST} from "../../../api/base";
 import {useState} from "react";
 import {useAppDispatch} from "../../../store/store";
 import {setToken, setUserInfo} from "../../../store/loginSlice";
+import {showSnackBar} from "@/store/snackbarSlice";
 
 const valdiationSchema = Yup.object().shape({
 	name: Yup.string().required(),
@@ -41,12 +42,16 @@ export default function RegistrationPage() {
 				helpers.setErrors(response.msg.errors);
 				return;
 			}
-			console.log(response.msg.message);
 		}
+		dispatch(
+			showSnackBar({
+				message: response.msg.message ? response.msg.message : "An error occured",
+				severity: response.is_error ? "error" : "success",
+			})
+		);
 
 		dispatch(setUserInfo(response.msg.data));
 		dispatch(setToken(response.msg.token));
-		console.log(response.msg);
 	};
 	return (
 		<div

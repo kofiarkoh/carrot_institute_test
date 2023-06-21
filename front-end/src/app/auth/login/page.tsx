@@ -15,6 +15,7 @@ import {useState} from "react";
 import {useAppDispatch} from "@/store/store";
 import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
+import {showSnackBar} from "../../../store/snackbarSlice";
 
 const valdiationSchema = Yup.object().shape({
 	email: Yup.string().email().required(),
@@ -38,9 +39,13 @@ export default function LoginPage() {
 				helpers.setErrors(response.msg.errors);
 				return;
 			}
-			console.log(response.msg.message);
 		}
-
+		dispatch(
+			showSnackBar({
+				message: response.msg.message ? response.msg.message : "An error occured",
+				severity: response.is_error ? "error" : "success",
+			})
+		);
 		dispatch(setUserInfo(response.msg.data));
 		dispatch(setToken(response.msg.token));
 		router.push("/tasks/index");
