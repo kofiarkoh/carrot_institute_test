@@ -4,18 +4,48 @@
 import {css} from "@emotion/react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import {Formik} from "formik";
+import {Formik, FormikHelpers} from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
 import FormPasswordInput from "../../../components/forms/FormPasswordInput";
 import FormTextField from "../../../components/forms/FormTextField";
 import SubmitButton from "../../../components/forms/SubmitButton";
+import {POST} from "@/api/base";
+import {useState} from "react";
+import {useAppDispatch} from "@/store/store";
+import {setToken, setUserInfo} from "@/store/loginSlice";
+import {useRouter} from "next/navigation";
 
 const valdiationSchema = Yup.object().shape({
 	email: Yup.string().email().required(),
 	password: Yup.string().required(),
 });
 export default function LoginPage() {
+	const [loading, setLoading] = useState(false);
+	const dispatch = useAppDispatch();
+	const router = useRouter();
+
+	const handleLogin = async (data: any, helpers: FormikHelpers<any>) => {
+		if (loading) {
+			return;
+		}
+
+		setLoading(true);
+		let response = await POST("auth/login", data);
+		setLoading(false);
+		if (response.is_error) {
+			if (response.code === 422) {
+				helpers.setErrors(response.msg.errors);
+				return;
+			}
+			console.log(response.msg.message);
+		}
+
+		dispatch(setUserInfo(response.msg.data));
+		dispatch(setToken(response.msg.token));
+		router.push("/tasks/index");
+	};
+
 	return (
 		<div
 			css={css`
@@ -34,7 +64,7 @@ export default function LoginPage() {
 				validateOnBlur={false}
 				validateOnMount={false}
 				validateOnChange={false}
-				onSubmit={(d, h) => {}}>
+				onSubmit={handleLogin}>
 				<Card sx={{padding: 5, margin: {xs: 4}}}>
 					<Typography variant="h4" my={3} sx={{textAlign: "center"}}>
 						Welcome Back
@@ -52,7 +82,7 @@ export default function LoginPage() {
 							display: flex;
 							justify-content: flex-end;
 						`}></div>
-					<SubmitButton loading={false} sx={{width: "100%", my: 3}}>
+					<SubmitButton loading={loading} sx={{width: "100%", my: 3}}>
 						Log In
 					</SubmitButton>
 					<div
