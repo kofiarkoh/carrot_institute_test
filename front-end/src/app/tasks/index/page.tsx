@@ -2,22 +2,10 @@
 /** @jsxImportSource @emotion/react */
 
 import {css} from "@emotion/react";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import {Formik} from "formik";
-import * as Yup from "yup";
-import FormDatePicker from "../../../components/forms/FormDatePicker";
-import FormTextField from "../../../components/forms/FormTextField";
-import SubmitButton from "../../../components/forms/SubmitButton";
-import TaskItem from "../../../components/TaskItem";
 import Grid from "@mui/material/Grid";
+import * as Yup from "yup";
+import TaskItem from "../../../components/TaskItem";
 
-const valdiationSchema = Yup.object().shape({
-	name: Yup.string().required(),
-	email: Yup.string().email().required(),
-	password: Yup.string().required(),
-	password_confirmation: Yup.string().required(),
-});
 export default function AddTaskDetails() {
 	return (
 		<div
