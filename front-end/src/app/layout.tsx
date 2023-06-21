@@ -9,6 +9,7 @@ import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Provider} from "react-redux";
 import {reduxStore} from "../store/store";
+import AppSnackbar from "../components/AppSnackbar";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -30,6 +31,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 									backgroundColor: "white",
 								}}>
 								{children}
+								<AppSnackbar />
 							</Container>
 						</LocalizationProvider>
 					</ThemeProvider>
