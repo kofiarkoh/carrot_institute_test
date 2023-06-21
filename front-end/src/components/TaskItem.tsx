@@ -7,8 +7,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import {POST} from "../api/base";
+import {DELETE, POST} from "../api/base";
 import LinearProgress from "@mui/material/LinearProgress";
+import {useAppDispatch} from "../store/store";
+import {removeTask} from "../store/tasksSlice";
 
 type Props = {
 	title: string;
@@ -18,6 +20,7 @@ type Props = {
 };
 export default function TaskItem(props: Props) {
 	const {title, description, due_at, uuid} = props;
+	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(false);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -43,6 +46,23 @@ export default function TaskItem(props: Props) {
 		setLoading(false);
 		console.log(response);
 	};
+
+	const deleteTask = async () => {
+		setAnchorEl(null);
+		if (loading) {
+			return;
+		}
+		setLoading(true);
+
+		let response = await DELETE(`tasks/${uuid}`);
+		setLoading(false);
+		if (response.is_error) {
+			return;
+		}
+
+		dispatch(removeTask(uuid));
+		console.log(response);
+	};
 	return (
 		<Box sx={{width: "100%"}}>
 			<Card
@@ -64,7 +84,7 @@ export default function TaskItem(props: Props) {
 
 					<Typography variant="body2">{description}</Typography>
 				</CardContent>
-				<CardActions>
+				<CardActions sx={{flexDirection: "row", justifyContent: "flex-end"}}>
 					<div>
 						<Button
 							id="status-button"
@@ -89,6 +109,9 @@ export default function TaskItem(props: Props) {
 							</MenuItem>
 						</Menu>
 					</div>
+					<Button size="small" color="error" onClick={deleteTask}>
+						Delete
+					</Button>
 				</CardActions>
 			</Card>
 		</Box>

@@ -19,9 +19,12 @@ export const taskSlice = createSlice({
 		addTask: (state, {payload}) => {
 			state.tasks = state.tasks.concat([payload]);
 		},
+		removeTask: (state, {payload}) => {
+			state.tasks = state.tasks.filter((i) => i.uuid !== payload);
+		},
 	},
 });
 
-export const {updateTasks, addTask} = taskSlice.actions;
+export const {updateTasks, addTask, removeTask} = taskSlice.actions;
 
 export default taskSlice.reducer;
