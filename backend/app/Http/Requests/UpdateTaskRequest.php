@@ -25,7 +25,7 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title' => ['required'],
             'description' => ['required'],
-            'due_at' => ['required', 'date_format:d-m-Y', 'after_or_equal:today'],
+            'due_at' => ['required', 'after_or_equal:today'],
             'status' => ['required', Rule::in(['pending', 'in progress', 'completed'])]
         ];
     }

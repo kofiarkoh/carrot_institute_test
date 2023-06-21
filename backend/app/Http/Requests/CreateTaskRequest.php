@@ -24,7 +24,7 @@ class CreateTaskRequest extends FormRequest
         return [
             'title' => ['required'],
             'description' => ['required'],
-            'due_at' => ['required', 'date_format:d-m-Y', 'after_or_equal:today'],
+            'due_at' => ['required', 'date', 'after_or_equal:today'],
 
         ];
     }

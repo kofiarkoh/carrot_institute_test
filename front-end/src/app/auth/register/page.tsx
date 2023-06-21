@@ -4,20 +4,50 @@
 import {css} from "@emotion/react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import {Formik} from "formik";
+import {Formik, FormikHelpers} from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
 import FormPasswordInput from "../../../components/forms/FormPasswordInput";
 import FormTextField from "../../../components/forms/FormTextField";
 import SubmitButton from "../../../components/forms/SubmitButton";
+import {POST} from "../../../api/base";
+import {useState} from "react";
+import {useAppDispatch} from "../../../store/store";
+import {setToken, setUserInfo} from "../../../store/loginSlice";
 
 const valdiationSchema = Yup.object().shape({
 	name: Yup.string().required(),
 	email: Yup.string().email().required(),
-	password: Yup.string().required(),
-	password_confirmation: Yup.string().required(),
+	password: Yup.string().min(5).max(15).required(),
+	password_confirmation: Yup.string()
+		.oneOf([Yup.ref("password")], "Passwords do not match")
+		.required(),
 });
+
 export default function RegistrationPage() {
+	const [loading, setLoading] = useState(false);
+	const dispatch = useAppDispatch();
+
+	const handleRegister = async (data: any, helpers: FormikHelpers<any>) => {
+		if (loading) {
+			return;
+		}
+
+		setLoading(true);
+		let response = await POST("auth/register", data);
+		setLoading(false);
+		if (response.is_error) {
+			if (response.code === 422) {
+				helpers.setErrors(response.msg.errors);
+				return;
+			}
+			console.log(response.msg.message);
+		}
+
+		dispatch(setUserInfo(response.msg.data));
+		dispatch(setToken(response.msg.token));
+		console.log(response.msg);
+	};
 	return (
 		<div
 			css={css`
@@ -41,7 +71,7 @@ export default function RegistrationPage() {
 				validateOnBlur={false}
 				validateOnMount={false}
 				validateOnChange={false}
-				onSubmit={(d, h) => {}}>
+				onSubmit={handleRegister}>
 				<Card sx={{padding: 5, margin: {xs: 4}}}>
 					<Typography variant="h4" my={3} sx={{textAlign: "center"}}>
 						SIGN UP
@@ -66,7 +96,7 @@ export default function RegistrationPage() {
 							display: flex;
 							justify-content: flex-end;
 						`}></div>
-					<SubmitButton loading={false} sx={{width: "100%", my: 3}}>
+					<SubmitButton loading={loading} sx={{width: "100%", my: 3}}>
 						Register
 					</SubmitButton>
 					<div

@@ -12,6 +12,7 @@ export default function FormTextField(props: FormTextFieldProps) {
 	return (
 		<TextField
 			label={props.label}
+			value={meta.value}
 			error={meta.error ? true : false}
 			helperText={meta.error ? meta.error : null}
 			onChange={(e) => helpers.setValue(e.target.value)}
