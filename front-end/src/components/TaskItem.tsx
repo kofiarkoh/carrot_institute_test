@@ -12,6 +12,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import {useAppDispatch} from "../store/store";
 import {removeTask, setCurrentTask} from "../store/tasksSlice";
 import {useRouter} from "next/navigation";
+import {showSnackBar} from "../store/snackbarSlice";
 
 type Props = {
 	title: string;
@@ -46,7 +47,12 @@ export default function TaskItem(props: Props) {
 			"Content-Type": "application'/form-data",
 		});
 		setLoading(false);
-		console.log(response);
+		dispatch(
+			showSnackBar({
+				message: response.msg.message ? response.msg.message : "An error occured",
+				severity: response.is_error ? "error" : "success",
+			})
+		);
 	};
 
 	const deleteTask = async () => {
@@ -61,9 +67,13 @@ export default function TaskItem(props: Props) {
 		if (response.is_error) {
 			return;
 		}
-
+		dispatch(
+			showSnackBar({
+				message: response.msg.message ? response.msg.message : "An error occured",
+				severity: response.is_error ? "error" : "success",
+			})
+		);
 		dispatch(removeTask(uuid));
-		console.log(response);
 	};
 
 	const editTask = () => {
