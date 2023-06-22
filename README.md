@@ -28,5 +28,6 @@ The front end was made using NextJS (React) and its located in the `front-end` f
 #### Steps to Run the front-end
 - run `cd front-end`.
 - change the `BASE_URL` in `front-end/src/api/base.ts` to match the server url show when you run `php artisan serve`. Remember to add the `/api` at the end of your port.
+- comment out `output: "export"` and `basePath: "/~mediabil/carrot_institute_test"` in `next.config.js`. These configs were used for static site deployment purposes hence may not work on local machine
 - run `npm run dev` to start the NextJS dev server.
 - open the app url shown in your terminal to begin using the app. it is usually `http://localhost:3000`
