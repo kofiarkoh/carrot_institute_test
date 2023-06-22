@@ -20,9 +20,10 @@ type Props = {
 	description: string;
 	due_at: string;
 	uuid: string;
+	status: string;
 };
 export default function TaskItem(props: Props) {
-	const {title, description, due_at, uuid} = props;
+	const {title, description, due_at, uuid, status} = props;
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
@@ -94,9 +95,19 @@ export default function TaskItem(props: Props) {
 				}}>
 				{loading && <LinearProgress />}
 				<CardContent>
-					<Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-						Due on {due_at}
-					</Typography>
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+						}}>
+						<Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+							Due on {due_at}
+						</Typography>
+						<Button color={status === "pending" ? "error" : "secondary"}>
+							{status}
+						</Button>
+					</div>
 					<Typography variant="h5" component="div" sx={{my: 2}}>
 						{title}
 					</Typography>
