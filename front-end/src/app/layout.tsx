@@ -24,12 +24,11 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 		useEffect(() => {
 			let _userInfo: string | null = sessionStorage.getItem("user_info");
 			let token: string | null = sessionStorage.getItem("bearer_token");
-
 			if (!_userInfo || !token) {
 				router.push("/auth/login");
 			} else {
 				let userInfo: User = JSON.parse(_userInfo);
-				dispatch(setToken(token));
+				dispatch(setToken(JSON.parse(token)));
 				dispatch(setUserInfo(userInfo));
 			}
 		}, []);

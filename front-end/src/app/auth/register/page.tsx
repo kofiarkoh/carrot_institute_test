@@ -49,8 +49,8 @@ export default function RegistrationPage() {
 				severity: response.is_error ? "error" : "success",
 			})
 		);
-		sessionStorage.setItem("user_info", response.msg.data);
-		sessionStorage.setItem("bearer_token", response.msg.token);
+		sessionStorage.setItem("user_info", JSON.stringify(response.msg.data));
+		sessionStorage.setItem("bearer_token", JSON.stringify(response.msg.token));
 
 		dispatch(setUserInfo(response.msg.data));
 		dispatch(setToken(response.msg.token));
