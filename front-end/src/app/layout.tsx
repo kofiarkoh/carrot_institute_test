@@ -8,12 +8,34 @@ import {ThemeProvider, createTheme} from "@mui/material/styles";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Provider} from "react-redux";
-import {reduxStore} from "../store/store";
+import {reduxStore, useAppDispatch, useAppSelector} from "../store/store";
 import AppSnackbar from "../components/AppSnackbar";
-
+import {useRouter} from "next/navigation";
+import {useEffect} from "react";
+import {User, setToken, setUserInfo} from "../store/loginSlice";
 const inter = Inter({subsets: ["latin"]});
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
+	const RenderDashboardLayout = () => {
+		const {user} = useAppSelector((state) => state.loginState);
+		const dispatch = useAppDispatch();
+		const router = useRouter();
+
+		useEffect(() => {
+			let _userInfo: string | null = sessionStorage.getItem("user_info");
+			let token: string | null = sessionStorage.getItem("bearer_token");
+
+			if (!_userInfo || !token) {
+				router.push("/auth/login");
+			} else {
+				let userInfo: User = JSON.parse(_userInfo);
+				dispatch(setToken(token));
+				dispatch(setUserInfo(userInfo));
+			}
+		}, []);
+
+		return <>{children}</>;
+	};
 	return (
 		<html lang="en">
 			<body className={inter.className}>
@@ -30,7 +52,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 									width: ["100%", "100%", "100%", "100%", "1000px"],
 									backgroundColor: "white",
 								}}>
-								{children}
+								<RenderDashboardLayout>{children}</RenderDashboardLayout>
 								<AppSnackbar />
 							</Container>
 						</LocalizationProvider>
