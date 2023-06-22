@@ -26,11 +26,19 @@ export default function LoginPage() {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 
+	/**
+	 * call login api with the validated data .
+	 * it saves the user info and token in sesssion storage and redux store
+	 * once login is successful and navigates to show all task page.
+	 * should login fail, appropriate errors will be shown on the form using formik helpers.
+	 * @param data
+	 * @param helpers
+	 * @returns
+	 */
 	const handleLogin = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
 			return;
 		}
-
 		setLoading(true);
 		let response = await POST("auth/login", data);
 		setLoading(false);

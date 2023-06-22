@@ -19,6 +19,10 @@ export default function AddTaskDetails() {
 	const {tasks} = useAppSelector((state) => state.tasksState);
 	const router = useRouter();
 
+	/**
+	 * retrieves all tasks from the api and saves them in redux store
+	 * @returns
+	 */
 	const fetchTasks = async () => {
 		if (loading) {
 			return;

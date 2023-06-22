@@ -29,6 +29,13 @@ export default function AddTaskDetails() {
 	const formikRef = useRef<FormikProps<FormikValues>>(null);
 	const {currentTask} = useAppSelector((state) => state.tasksState);
 
+	/**
+	 * calls the create new tasks endpoint if currentTask in redux state is empty,
+	 * else , it calls the update task enpoint
+	 * @param data
+	 * @param helpers
+	 * @returns
+	 */
 	const createTask = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
 			return;
@@ -56,6 +63,10 @@ export default function AddTaskDetails() {
 		}
 
 		if (isUpdate) {
+			/*
+				reset the currenTask so that if the user comes back to this 
+				page through the create task button, a create new task request will be made 
+			 */
 			dispatch(
 				setCurrentTask({
 					title: "",
@@ -68,6 +79,7 @@ export default function AddTaskDetails() {
 			router.push("/tasks/index");
 		}
 
+		// update the tasks and go back to showw all tasks created
 		dispatch(addTask(response.msg.data));
 		router.push("/tasks/index");
 	};

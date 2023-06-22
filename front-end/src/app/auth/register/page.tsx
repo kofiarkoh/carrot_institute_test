@@ -29,6 +29,15 @@ export default function RegistrationPage() {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
 
+	/**
+	 * call register api with the validated data .
+	 * it saves the user info and token in sesssion storage and redux store
+	 * once registration is successful and navigates to show all task page.
+	 * should registration fail, appropriate errors will be shown on the form using formik helpers.
+	 * @param data
+	 * @param helpers
+	 * @returns
+	 */
 	const handleRegister = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
 			return;
