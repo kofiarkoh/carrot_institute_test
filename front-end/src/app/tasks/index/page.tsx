@@ -13,13 +13,14 @@ import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
 import {updateTasks} from "../../../store/tasksSlice";
 import {showSnackBar} from "@/store/snackbarSlice";
-import {Typography} from "@mui/material";
+import {Button, Typography} from "@mui/material";
 
 export default function AddTaskDetails() {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
 	const {user} = useAppSelector((state) => state.loginState);
 	const {tasks} = useAppSelector((state) => state.tasksState);
+	const router = useRouter();
 
 	const fetchTasks = async () => {
 		if (loading) {
@@ -41,6 +42,9 @@ export default function AddTaskDetails() {
 		dispatch(updateTasks(response.msg.data));
 	};
 
+	const createTask = () => {
+		router.push("/tasks/details");
+	};
 	useEffect(() => {
 		fetchTasks();
 	}, []);
@@ -58,10 +62,28 @@ export default function AddTaskDetails() {
 
 				align-items: flex-start;
 			`}>
-			<div style={{width: "100%", paddingLeft: "20px", paddingTop: "40px"}}>
-				<Typography variant="h3">Welcome, {user.name.split(" ")[0]}</Typography>
-			</div>
 			<Grid container spacing={4} sx={{padding: "20px"}}>
+				<Grid item sm={12} md={12} lg={12}>
+					<div
+						style={{
+							paddingTop: "10px",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+
+							width: "100%",
+						}}>
+						<div>
+							<Typography variant="h6">Welcome, {user.name.split(" ")[0]}</Typography>
+							<Typography variant="body1">Here are your tasks</Typography>
+						</div>
+						<div>
+							<Button variant="contained" onClick={createTask}>
+								Create Task
+							</Button>
+						</div>
+					</div>
+				</Grid>
 				{tasks.map((task) => {
 					return (
 						<Grid key={task.uuid} item sm={12} md={6} lg={4}>
