@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import {DELETE, POST} from "../api/base";
 import LinearProgress from "@mui/material/LinearProgress";
 import {useAppDispatch} from "../store/store";
-import {removeTask, setCurrentTask} from "../store/tasksSlice";
+import {removeTask, setCurrentTask, updateTask} from "../store/tasksSlice";
 import {useRouter} from "next/navigation";
 import {showSnackBar} from "../store/snackbarSlice";
 import Skeleton from "@mui/material/Skeleton";
@@ -55,6 +55,10 @@ export default function TaskItem(props: Props) {
 				severity: response.is_error ? "error" : "success",
 			})
 		);
+
+		if (!response.is_error) {
+			dispatch(updateTask(response.msg.data));
+		}
 	};
 
 	const deleteTask = async () => {
