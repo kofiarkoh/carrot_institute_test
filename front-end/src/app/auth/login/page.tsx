@@ -45,13 +45,19 @@ export default function LoginPage() {
 		if (response.is_error) {
 			if (response.code === 422) {
 				helpers.setErrors(response.msg.errors);
-				return;
 			}
+			dispatch(
+				showSnackBar({
+					message: response.msg.message ? response.msg.message : "An error occured",
+					severity: response.is_error ? "error" : "success",
+				})
+			);
+			return;
 		}
 		dispatch(
 			showSnackBar({
-				message: response.msg.message ? response.msg.message : "An error occured",
-				severity: response.is_error ? "error" : "success",
+				message: response.msg.message,
+				severity: "success",
 			})
 		);
 		sessionStorage.setItem("user_info", JSON.stringify(response.msg.data));
