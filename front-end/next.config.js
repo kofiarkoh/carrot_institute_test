@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	async redirects() {
+	output: "export",
+	/* async redirects() {
 		return [
 			{
 				source: "/",
@@ -8,10 +9,11 @@ const nextConfig = {
 				permanent: true,
 			},
 		];
-	},
+	}, */
 	typescript: {
 		ignoreBuildErrors: true,
 	},
+	basePath: "/~mediabil/carrot_institute_test",
 };
 
 module.exports = nextConfig;
