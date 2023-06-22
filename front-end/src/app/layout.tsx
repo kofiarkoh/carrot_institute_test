@@ -11,30 +11,17 @@ import {Provider} from "react-redux";
 import {reduxStore, useAppDispatch, useAppSelector} from "../store/store";
 import AppSnackbar from "../components/AppSnackbar";
 import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {User, setToken, setUserInfo} from "../store/loginSlice";
 const inter = Inter({subsets: ["latin"]});
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
-	const RenderDashboardLayout = () => {
-		const {user} = useAppSelector((state) => state.loginState);
-		const dispatch = useAppDispatch();
-		const router = useRouter();
+	const [isloadingToken, setLoadingToken] = useState(false);
 
-		useEffect(() => {
-			let _userInfo: string | null = sessionStorage.getItem("user_info");
-			let token: string | null = sessionStorage.getItem("bearer_token");
-			if (!_userInfo || !token) {
-				router.push("/auth/login");
-			} else {
-				let userInfo: User = JSON.parse(_userInfo);
-				dispatch(setToken(JSON.parse(token)));
-				dispatch(setUserInfo(userInfo));
-			}
-		}, []);
+	useEffect(() => {
+		setLoadingToken(true);
+	}, []);
 
-		return <>{children}</>;
-	};
 	return (
 		<html lang="en">
 			<body className={inter.className}>
@@ -61,3 +48,33 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 		</html>
 	);
 }
+
+const RenderDashboardLayout = ({children}: {children: React.ReactNode}) => {
+	const [isloadingToken, setLoadingToken] = useState(true);
+
+	const dispatch = useAppDispatch();
+	const router = useRouter();
+
+	useEffect(() => {
+		setLoadingToken(true);
+		console.log("ready");
+		let _userInfo: string | null = sessionStorage.getItem("user_info");
+		let token: string | null = sessionStorage.getItem("bearer_token");
+
+		if (!_userInfo || !token) {
+			setLoadingToken(false);
+			router.push("/auth/login");
+		} else {
+			setLoadingToken(false);
+			let userInfo: User = JSON.parse(_userInfo);
+			dispatch(setToken(JSON.parse(token)));
+			dispatch(setUserInfo(userInfo));
+		}
+	}, []);
+
+	if (isloadingToken) {
+		return <></>;
+	}
+
+	return <>{children}</>;
+};
