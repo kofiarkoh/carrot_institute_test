@@ -99,7 +99,7 @@ export default function LoginPage() {
 							align-items: center;
 						`}>
 						<Typography>Don&apos;t have an account?</Typography>
-						<Link href="#" style={{textDecoration: "none"}}>
+						<Link href="/auth/register" style={{textDecoration: "none"}}>
 							<Typography pl={2}> Sign Up</Typography>
 						</Link>
 					</div>
