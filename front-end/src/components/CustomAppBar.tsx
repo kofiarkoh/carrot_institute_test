@@ -26,7 +26,9 @@ export default function CustomAppBar() {
 					<Typography variant="h6" component="div" sx={{flexGrow: 1}}>
 						CTI
 					</Typography>
-					<Button color="inherit">Logout</Button>
+					<Button color="inherit" onClick={logout}>
+						Logout
+					</Button>
 				</Toolbar>
 			</AppBar>
 		</>
