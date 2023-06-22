@@ -11,6 +11,7 @@ since this is only a test application, there is not email verification when regi
 The backend is implemented with laravel framework v10 and it's located in the `backend` directory within this repo.
 The front end was made using NextJS (React) and its located in the `front-end` folder.
 
+#### Demo can be found [here](http://188.165.208.104/~mediabil/carrot_institute_test/auth/login.html)
 #### Steps to Run the backend server
 - run `cd backend` to change directory to the backend folder in your terminal.
 - copy the contents of `.env.example` to a new file `.env`
