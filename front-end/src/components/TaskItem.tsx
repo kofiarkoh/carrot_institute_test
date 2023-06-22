@@ -10,18 +10,20 @@ import MenuItem from "@mui/material/MenuItem";
 import {DELETE, POST} from "../api/base";
 import LinearProgress from "@mui/material/LinearProgress";
 import {useAppDispatch} from "../store/store";
-import {removeTask, setCurrentTask} from "../store/tasksSlice";
+import {removeTask, setCurrentTask, updateTask} from "../store/tasksSlice";
 import {useRouter} from "next/navigation";
 import {showSnackBar} from "../store/snackbarSlice";
+import Skeleton from "@mui/material/Skeleton";
 
 type Props = {
 	title: string;
 	description: string;
 	due_at: string;
 	uuid: string;
+	status: string;
 };
 export default function TaskItem(props: Props) {
-	const {title, description, due_at, uuid} = props;
+	const {title, description, due_at, uuid, status} = props;
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
@@ -53,6 +55,10 @@ export default function TaskItem(props: Props) {
 				severity: response.is_error ? "error" : "success",
 			})
 		);
+
+		if (!response.is_error) {
+			dispatch(updateTask(response.msg.data));
+		}
 	};
 
 	const deleteTask = async () => {
@@ -93,9 +99,19 @@ export default function TaskItem(props: Props) {
 				}}>
 				{loading && <LinearProgress />}
 				<CardContent>
-					<Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-						Due on {due_at}
-					</Typography>
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+						}}>
+						<Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+							Due on {due_at}
+						</Typography>
+						<Button color={status === "pending" ? "error" : "secondary"}>
+							{status}
+						</Button>
+					</div>
 					<Typography variant="h5" component="div" sx={{my: 2}}>
 						{title}
 					</Typography>
@@ -133,6 +149,39 @@ export default function TaskItem(props: Props) {
 					<Button size="small" onClick={editTask}>
 						Edit
 					</Button>
+				</CardActions>
+			</Card>
+		</Box>
+	);
+}
+export function TaskItemSkeleton() {
+	return (
+		<Box sx={{width: "100%"}}>
+			<Card
+				variant="outlined"
+				sx={{
+					width: "100%",
+					sheight: "400px",
+					display: "flex",
+					flexDirection: "column",
+				}}>
+				<LinearProgress />
+				<CardContent>
+					<Skeleton animation="wave" width="100px" />
+
+					<Skeleton animation="wave" width="150px" />
+
+					<Skeleton animation="wave" width="170px" sx={{mt: "40px"}} />
+					<Skeleton animation="wave" width="240px" />
+					<Skeleton animation="wave" width="240px" />
+					<Skeleton animation="wave" width="190px" />
+				</CardContent>
+				<CardActions sx={{flexDirection: "row", justifyContent: "flex-end"}}>
+					<div>
+						<Skeleton animation="wave" width="50px" sx={{marginRight: "10px"}} />
+					</div>
+					<Skeleton animation="wave" width="50px" />
+					<Skeleton animation="wave" width="50px" />
 				</CardActions>
 			</Card>
 		</Box>

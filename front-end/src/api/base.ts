@@ -34,7 +34,7 @@ export const POST = async (
 	headers = {},
 	timeout = 1800000
 ) => {
-	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
+	let token = reduxStore.getState().loginState.token;
 	let _headers = {
 		Accept: "application/json",
 		Authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ export const PUT = async (
 	headers = {},
 	timeout = 1800000
 ) => {
-	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
+	let token = reduxStore.getState().loginState.token;
 	let _headers = {
 		Accept: "application/json",
 		Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ export const PUT = async (
 };
 
 export const GET = async (endpoint: string, headers = {}) => {
-	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
+	let token = reduxStore.getState().loginState.token;
 
 	let _headers = {
 		Accept: "application/json",
@@ -116,7 +116,7 @@ export const GET = async (endpoint: string, headers = {}) => {
 		});
 };
 export const DELETE = async (endpoint: string, headers = {}) => {
-	let token = "9|VOa7JS18zVOO6FOEPriWcSl2mkvamKF92hYpbelv"; // reduxStore.getState().loginState.token;
+	let token = reduxStore.getState().loginState.token;
 
 	let _headers = {
 		Accept: "application/json",

@@ -46,6 +46,8 @@ export default function LoginPage() {
 				severity: response.is_error ? "error" : "success",
 			})
 		);
+		sessionStorage.setItem("user_info", JSON.stringify(response.msg.data));
+		sessionStorage.setItem("bearer_token", JSON.stringify(response.msg.token));
 		dispatch(setUserInfo(response.msg.data));
 		dispatch(setToken(response.msg.token));
 		router.push("/tasks/index");
@@ -97,7 +99,7 @@ export default function LoginPage() {
 							align-items: center;
 						`}>
 						<Typography>Don&apos;t have an account?</Typography>
-						<Link href="#" style={{textDecoration: "none"}}>
+						<Link href="/auth/register" style={{textDecoration: "none"}}>
 							<Typography pl={2}> Sign Up</Typography>
 						</Link>
 					</div>
