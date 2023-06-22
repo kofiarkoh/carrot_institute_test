@@ -91,7 +91,7 @@ const RenderDashboardLayout = ({children}: {children: React.ReactNode}) => {
 
 	return (
 		<>
-			{user.name && (
+			{/* {user.name && (
 				<AppBar position="static" sx={{position: "static"}}>
 					<Toolbar>
 						<Typography variant="h6" component="div" sx={{flexGrow: 1}}>
@@ -100,7 +100,7 @@ const RenderDashboardLayout = ({children}: {children: React.ReactNode}) => {
 						<Button color="inherit">Logout</Button>
 					</Toolbar>
 				</AppBar>
-			)}
+			)} */}
 			{children}
 		</>
 	);
