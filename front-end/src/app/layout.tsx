@@ -13,6 +13,14 @@ import AppSnackbar from "../components/AppSnackbar";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import {User, setToken, setUserInfo} from "../store/loginSlice";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+
 const inter = Inter({subsets: ["latin"]});
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -76,5 +84,17 @@ const RenderDashboardLayout = ({children}: {children: React.ReactNode}) => {
 		return <></>;
 	}
 
-	return <>{children}</>;
+	return (
+		<>
+			<AppBar position="static">
+				<Toolbar>
+					<Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+						CTI
+					</Typography>
+					<Button color="inherit">Logout</Button>
+				</Toolbar>
+			</AppBar>
+			{children}
+		</>
+	);
 };
