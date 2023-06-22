@@ -63,6 +63,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 
 const RenderDashboardLayout = ({children}: {children: React.ReactNode}) => {
 	const [isloadingToken, setLoadingToken] = useState(true);
+	const {user} = useAppSelector((state) => state.loginState);
 
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -90,14 +91,16 @@ const RenderDashboardLayout = ({children}: {children: React.ReactNode}) => {
 
 	return (
 		<>
-			<AppBar position="static">
-				<Toolbar>
-					<Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-						CTI
-					</Typography>
-					<Button color="inherit">Logout</Button>
-				</Toolbar>
-			</AppBar>
+			{user.name && (
+				<AppBar position="static" sx={{position: "static"}}>
+					<Toolbar>
+						<Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+							CTI
+						</Typography>
+						<Button color="inherit">Logout</Button>
+					</Toolbar>
+				</AppBar>
+			)}
 			{children}
 		</>
 	);
