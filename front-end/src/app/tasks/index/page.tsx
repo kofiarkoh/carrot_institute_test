@@ -12,6 +12,7 @@ import {useAppDispatch, useAppSelector} from "@/store/store";
 import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
 import {updateTasks} from "../../../store/tasksSlice";
+import {showSnackBar} from "@/store/snackbarSlice";
 
 export default function AddTaskDetails() {
 	const [loading, setLoading] = useState(false);
@@ -25,8 +26,14 @@ export default function AddTaskDetails() {
 		}
 		setLoading(true);
 		let response = await GET("tasks");
-		console.log(response);
+
 		setLoading(false);
+		dispatch(
+			showSnackBar({
+				message: response.msg.message ? response.msg.message : "An error occured",
+				severity: response.is_error ? "error" : "success",
+			})
+		);
 		if (response.is_error) {
 			return;
 		}
