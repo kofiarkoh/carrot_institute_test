@@ -13,11 +13,12 @@ import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
 import {updateTasks} from "../../../store/tasksSlice";
 import {showSnackBar} from "@/store/snackbarSlice";
+import {Typography} from "@mui/material";
 
 export default function AddTaskDetails() {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
-
+	const {user} = useAppSelector((state) => state.loginState);
 	const {tasks} = useAppSelector((state) => state.tasksState);
 
 	const fetchTasks = async () => {
@@ -53,9 +54,13 @@ export default function AddTaskDetails() {
 				padding: 0;
 				margin: 0;
 				display: flex;
-				justify-content: center;
+				flex-direction: column;
+
 				align-items: flex-start;
 			`}>
+			<div style={{width: "100%", paddingLeft: "20px", paddingTop: "40px"}}>
+				<Typography variant="h3">Welcome, {user.name.split(" ")[0]}</Typography>
+			</div>
 			<Grid container spacing={4} sx={{padding: "20px"}}>
 				{tasks.map((task) => {
 					return (
