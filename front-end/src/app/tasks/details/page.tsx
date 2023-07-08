@@ -16,6 +16,7 @@ import {setToken, setUserInfo} from "@/store/loginSlice";
 import {useRouter} from "next/navigation";
 import {addTask, setCurrentTask} from "../../../store/tasksSlice";
 import {showSnackBar} from "@/store/snackbarSlice";
+import CustomAppBar from "../../../components/CustomAppBar";
 
 const valdiationSchema = Yup.object().shape({
 	title: Yup.string().required(),
@@ -29,6 +30,13 @@ export default function AddTaskDetails() {
 	const formikRef = useRef<FormikProps<FormikValues>>(null);
 	const {currentTask} = useAppSelector((state) => state.tasksState);
 
+	/**
+	 * calls the create new tasks endpoint if currentTask in redux state is empty,
+	 * else , it calls the update task enpoint
+	 * @param data
+	 * @param helpers
+	 * @returns
+	 */
 	const createTask = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
 			return;
@@ -56,6 +64,10 @@ export default function AddTaskDetails() {
 		}
 
 		if (isUpdate) {
+			/*
+				reset the currenTask so that if the user comes back to this 
+				page through the create task button, a create new task request will be made 
+			 */
 			dispatch(
 				setCurrentTask({
 					title: "",
@@ -68,6 +80,7 @@ export default function AddTaskDetails() {
 			router.push("/tasks/index");
 		}
 
+		// update the tasks and go back to showw all tasks created
 		dispatch(addTask(response.msg.data));
 		router.push("/tasks/index");
 	};
@@ -75,63 +88,66 @@ export default function AddTaskDetails() {
 		formikRef.current?.setValues(currentTask);
 	}, [currentTask]);
 	return (
-		<div
-			css={css`
-				background-color: rgb(243, 245, 249);
-				height: 97vh;
-				width: 100%;
-				padding: 0;
-				margin: 0;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			`}>
-			<Formik
-				innerRef={(t) => {
-					formikRef.current = t;
-				}}
-				initialValues={{
-					title: "",
-					description: "",
-					due_at: "",
-				}}
-				validationSchema={valdiationSchema}
-				validateOnBlur={false}
-				validateOnMount={false}
-				validateOnChange={false}
-				onSubmit={createTask}>
-				<Card sx={{padding: 5, margin: {xs: 4}}}>
-					<Typography variant="h4" my={3} sx={{textAlign: "center"}}>
-						Task Details
-					</Typography>
+		<>
+			<CustomAppBar />
+			<div
+				css={css`
+					background-color: rgb(243, 245, 249);
+					height: 97vh;
+					width: 100%;
+					padding: 0;
+					margin: 0;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				`}>
+				<Formik
+					innerRef={(t) => {
+						formikRef.current = t;
+					}}
+					initialValues={{
+						title: "",
+						description: "",
+						due_at: "",
+					}}
+					validationSchema={valdiationSchema}
+					validateOnBlur={false}
+					validateOnMount={false}
+					validateOnChange={false}
+					onSubmit={createTask}>
+					<Card sx={{padding: 5, margin: {xs: 4}}}>
+						<Typography variant="h4" my={3} sx={{textAlign: "center"}}>
+							Task Details
+						</Typography>
 
-					<FormTextField
-						label="Title"
-						placeholder="Title"
-						name="title"
-						sx={{width: "100%", marginTop: 4}}
-					/>
+						<FormTextField
+							label="Title"
+							placeholder="Title"
+							name="title"
+							sx={{width: "100%", marginTop: 4}}
+						/>
 
-					<FormTextField
-						label="Description"
-						placeholder="Description"
-						name="description"
-						sx={{width: "100%", marginTop: 4}}
-						multiline
-					/>
+						<FormTextField
+							label="Description"
+							placeholder="Description"
+							name="description"
+							sx={{width: "100%", marginTop: 4}}
+							multiline
+						/>
 
-					<FormDatePicker name="due_at" label="Due Date" />
+						<FormDatePicker name="due_at" label="Due Date" />
 
-					<div
-						css={css`
-							display: flex;
-							justify-content: flex-end;
-						`}></div>
-					<SubmitButton loading={loading} sx={{width: "100%", my: 3}}>
-						Save Task
-					</SubmitButton>
-				</Card>
-			</Formik>
-		</div>
+						<div
+							css={css`
+								display: flex;
+								justify-content: flex-end;
+							`}></div>
+						<SubmitButton loading={loading} sx={{width: "100%", my: 3}}>
+							Save Task
+						</SubmitButton>
+					</Card>
+				</Formik>
+			</div>
+		</>
 	);
 }

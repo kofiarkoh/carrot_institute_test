@@ -15,7 +15,7 @@ import {useState} from "react";
 import {useAppDispatch} from "../../../store/store";
 import {setToken, setUserInfo} from "../../../store/loginSlice";
 import {showSnackBar} from "@/store/snackbarSlice";
-
+import {useRouter} from "next/navigation";
 const valdiationSchema = Yup.object().shape({
 	name: Yup.string().required(),
 	email: Yup.string().email().required(),
@@ -28,7 +28,17 @@ const valdiationSchema = Yup.object().shape({
 export default function RegistrationPage() {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useAppDispatch();
+	const router = useRouter();
 
+	/**
+	 * call register api with the validated data .
+	 * it saves the user info and token in sesssion storage and redux store
+	 * once registration is successful and navigates to show all task page.
+	 * should registration fail, appropriate errors will be shown on the form using formik helpers.
+	 * @param data
+	 * @param helpers
+	 * @returns
+	 */
 	const handleRegister = async (data: any, helpers: FormikHelpers<any>) => {
 		if (loading) {
 			return;
@@ -40,13 +50,20 @@ export default function RegistrationPage() {
 		if (response.is_error) {
 			if (response.code === 422) {
 				helpers.setErrors(response.msg.errors);
-				return;
 			}
+			dispatch(
+				showSnackBar({
+					message: response.msg.message ? response.msg.message : "An error occured",
+					severity: response.is_error ? "error" : "success",
+				})
+			);
+			return;
 		}
+
 		dispatch(
 			showSnackBar({
-				message: response.msg.message ? response.msg.message : "An error occured",
-				severity: response.is_error ? "error" : "success",
+				message: response.msg.message,
+				severity: "success",
 			})
 		);
 		sessionStorage.setItem("user_info", JSON.stringify(response.msg.data));
@@ -54,6 +71,7 @@ export default function RegistrationPage() {
 
 		dispatch(setUserInfo(response.msg.data));
 		dispatch(setToken(response.msg.token));
+		router.push("/tasks/index");
 	};
 	return (
 		<div

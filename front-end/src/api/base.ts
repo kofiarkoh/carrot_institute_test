@@ -1,7 +1,7 @@
 import axios from "axios";
 import {reduxStore} from "../store/store";
 
-const BASE_URL = "http://192.168.8.108:8000/api";
+const BASE_URL = "http://188.165.208.104/~mediabil/carrot/public/api"; // "http://192.168.8.108:8000/api";
 
 export const errorHandler = (error: any) => {
 	if (error.response) {

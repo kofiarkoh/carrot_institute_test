@@ -11,6 +11,7 @@ since this is only a test application, there is not email verification when regi
 The backend is implemented with laravel framework v10 and it's located in the `backend` directory within this repo.
 The front end was made using NextJS (React) and its located in the `front-end` folder.
 
+#### Demo can be found [here](http://188.165.208.104/~mediabil/carrot_institute_test/auth/login.html)
 #### Steps to Run the backend server
 - run `cd backend` to change directory to the backend folder in your terminal.
 - copy the contents of `.env.example` to a new file `.env`
@@ -28,5 +29,6 @@ The front end was made using NextJS (React) and its located in the `front-end` f
 #### Steps to Run the front-end
 - run `cd front-end`.
 - change the `BASE_URL` in `front-end/src/api/base.ts` to match the server url show when you run `php artisan serve`. Remember to add the `/api` at the end of your port.
+- comment out `output: "export"` and `basePath: "/~mediabil/carrot_institute_test"` in `next.config.js`. These configs were used for static site deployment purposes hence may not work on local machine
 - run `npm run dev` to start the NextJS dev server.
 - open the app url shown in your terminal to begin using the app. it is usually `http://localhost:3000`
