@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-text-field',
@@ -14,4 +15,7 @@ export class TextFieldComponent {
 
   @Input()
   inputClasses = '';
+
+  @Input()
+  control!: FormControl;
 }

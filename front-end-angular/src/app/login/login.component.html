@@ -1,18 +1,23 @@
 <div class="w-full h-screen bg-slate-100 flex justify-center items-center p-4">
   <div class="bg-white w-[600px] p-4 rounded-md">
-    <div class="my-7 text-center">
-      <h3 class="text-4xl">Welcome Back</h3>
-    </div>
-    <app-text-field placeholder="Email" />
-    <app-text-field
-      placeholder="Password"
-      type="Password"
-      inputClasses="mt-4"
-    />
+    <form action="" [formGroup]="loginForm">
+      <div class="my-7 text-center">
+        <h3 class="text-4xl">Welcome Back {{ loginForm.value.email }}</h3>
+      </div>
+      <app-text-field
+        placeholder="Email"
+        [control]="loginForm.controls.email"
+      />
+      <app-text-field
+        placeholder="Password"
+        type="Password"
+        inputClasses="mt-4"
+      />
 
-    <app-button label="Log In" (clickEvent)="login()" />
-    <div class="my-4 text-center">
-      <p>Don't have and account? <span>Sign Up Here</span></p>
-    </div>
+      <app-button label="Log In" (clickEvent)="login()" />
+      <div class="my-4 text-center">
+        <p>Don't have and account? <span>Sign Up Here</span></p>
+      </div>
+    </form>
   </div>
 </div>
