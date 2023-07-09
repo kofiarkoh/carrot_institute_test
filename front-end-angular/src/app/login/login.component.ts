@@ -11,7 +11,9 @@ export class LoginComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
   });
+
   login() {
+    console.log(this.loginForm.status);
     console.log('about to login');
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -17,5 +17,13 @@ export class TextFieldComponent {
   inputClasses = '';
 
   @Input()
-  control!: FormControl;
+  control!: FormControl; //= new FormControl();
+
+  errorMessage = '';
+
+  get message(): string {
+    // const control = this.myForm.get(controlName);
+
+    return '';
+  }
 }
