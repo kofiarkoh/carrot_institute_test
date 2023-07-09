@@ -2,7 +2,7 @@
   <div class="bg-white w-[600px] p-4 rounded-md">
     <form action="" [formGroup]="loginForm">
       <div class="my-7 text-center">
-        <h3 class="text-4xl">Welcome Back {{ loginForm.value.email }}</h3>
+        <h3 class="text-4xl">Welcome Back</h3>
       </div>
       <app-text-field
         placeholder="Email"
@@ -12,6 +12,7 @@
         placeholder="Password"
         type="Password"
         inputClasses="mt-4"
+        [control]="loginForm.controls.password"
       />
 
       <app-button label="Log In" (clickEvent)="login()" />

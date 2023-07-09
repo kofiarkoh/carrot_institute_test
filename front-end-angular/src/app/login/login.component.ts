@@ -8,7 +8,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class LoginComponent {
   loginForm = new FormGroup({
-    email: new FormControl('s'),
+    email: new FormControl(''),
+    password: new FormControl(''),
   });
   login() {
     console.log('about to login');
