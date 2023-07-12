@@ -7,14 +7,14 @@
       <app-text-field
         placeholder="Email"
         [control]="loginForm.controls.email"
-        [errorMessage]="errorMessages.email[0]"
+        [errorMessage]="errorMessages.email ? errorMessages.email[0] : ''"
       />
       <app-text-field
         placeholder="Password"
         type="Password"
         inputClasses="mt-4"
         [control]="loginForm.controls.password"
-        [errorMessage]="errorMessages.password[0]"
+        [errorMessage]="errorMessages.password ? errorMessages.password[0] : ''"
       />
 
       <app-button label="Log In" (clickEvent)="login()" type="submit" />
