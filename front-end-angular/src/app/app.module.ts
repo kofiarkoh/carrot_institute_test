@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { TextFieldComponent } from './form/text-field/text-field.component';
 import { ButtonComponent } from './button/button.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreateTaskComponent } from './tasks/create-task/create-task.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     TextFieldComponent,
     ButtonComponent,
+    CreateTaskComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
