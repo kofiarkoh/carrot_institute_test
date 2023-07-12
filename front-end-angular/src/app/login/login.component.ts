@@ -8,6 +8,10 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  errorMessages = {
+    email: [],
+    password: [],
+  };
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -16,6 +20,7 @@ export class LoginComponent {
   constructor(private authService: AuthService) {}
 
   login() {
+    console.log(this);
     this.authService
       .login({
         email: this.loginForm.value.email!!,
@@ -25,10 +30,14 @@ export class LoginComponent {
         next(value) {
           console.log(value);
         },
-        error(err) {
-          console.log(err.error.errors);
+        error: (err) => {
+          this.updateErrors(err);
         },
         complete() {},
       });
+  }
+
+  updateErrors(err: any) {
+    this.errorMessages = err.error.errors;
   }
 }

@@ -19,6 +19,7 @@ export class TextFieldComponent {
   @Input()
   control!: FormControl; //= new FormControl();
 
+  @Input()
   errorMessage = '';
 
   get message(): string {
